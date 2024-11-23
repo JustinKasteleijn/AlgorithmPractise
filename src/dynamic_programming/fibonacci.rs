@@ -11,7 +11,7 @@ pub fn memoization_fibonacci(n: usize) -> u128 {
 
 fn _memoization_fibonacci(n: usize, dp: &mut Vec<u128>) -> u128 {
     if n <= 1 {
-        return  1
+        return 1;
     }
 
     if let Some(&result) = dp.get(n) {
@@ -29,7 +29,7 @@ pub fn bottom_up_memoization_fibonacci(n: usize) -> u128 {
     dp.push(1);
 
     for i in 2..=n {
-          dp.push(dp[i-1] + dp[i-2]);
+        dp.push(dp[i - 1] + dp[i - 2]);
     }
 
     dp[n]

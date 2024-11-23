@@ -1,3 +1,2 @@
-mod fibonacci;
-
-pub use fibonacci::*;
+pub mod fibonacci;
+pub mod coin_change;
