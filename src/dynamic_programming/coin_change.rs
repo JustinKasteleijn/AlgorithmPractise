@@ -15,7 +15,7 @@ pub fn recursive_ways_to_make_sum(coins: &Vec<u32>, n: usize, sum: i128) -> u32 
 
 pub fn memoized_ways_to_make_sum(coins: &Vec<u32>, n: usize, sum: i128) -> u32 {
     let mut dp: Vec<Vec<u32>> = vec![vec![0; (sum + 1) as usize]; n + 1];
-    _memoized_ways_to_make_sum(coins, n, sum, &mut dp);
+    _memoized_ways_to_make_sum(coins, n, sum, &mut dp)
 }
 
 pub fn _memoized_ways_to_make_sum(coins: &Vec<u32>, n: usize, sum: i128, dp: &mut Vec<Vec<u32>>) -> u32 {
