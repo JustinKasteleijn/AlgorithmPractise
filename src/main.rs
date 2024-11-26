@@ -2,8 +2,29 @@ mod dynamic_programming;
 mod pretty_print;
 
 fn main() {
-    let coins: Vec<u32> = vec![2, 5, 3, 6];
-    let sum: i128 = 10;
-    println!("Result {}", dynamic_programming::coin_change::memoized_ways_to_make_sum(&coins, coins.len(), sum));
+    let items: Vec<dynamic_programming::knapsack::Item> = vec![
+        dynamic_programming::knapsack::Item {
+            value: 2,
+            weight: 3,
+        },
+        dynamic_programming::knapsack::Item {
+            value: 2,
+            weight: 1,
+        },
+        dynamic_programming::knapsack::Item {
+            value: 4,
+            weight: 3,
+        },
+        dynamic_programming::knapsack::Item {
+            value: 5,
+            weight: 4,
+        },
+        dynamic_programming::knapsack::Item {
+            value: 3,
+            weight: 2,
+        }
+    ];
+    const CAPACITY: u32 = 7;
+println!("Result {}", dynamic_programming::knapsack::recursive_knapsack(&items, CAPACITY));
 }
 
