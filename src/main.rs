@@ -25,6 +25,6 @@ fn main() {
         }
     ];
     const CAPACITY: u32 = 7;
-println!("Result {}", dynamic_programming::knapsack::recursive_knapsack(&items, CAPACITY));
+println!("Result {}", dynamic_programming::knapsack::dp_knapsack(&items, CAPACITY));
 }
 

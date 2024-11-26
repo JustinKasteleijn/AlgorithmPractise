@@ -25,3 +25,20 @@ fn _recursive_knapsack(items: &Vec<Item>, capacity: u32, i: usize) -> u32 {
         )
     }
 }
+
+pub fn dp_knapsack(items: &Vec<Item>, capacity: u32) -> u32 {
+    let mut dp: Vec<Vec<u32>> = vec![vec![0; capacity as usize+1]; items.len()+1] ;
+
+    for i in 1..=items.len() {
+        let item = &items[i-1];
+        for c in 1..=capacity as usize {
+            dp[i][c] = dp[i-1][c];
+
+            if item.weight <= c as u32 && dp[i-1][(c as u32 - item.weight) as usize] + item.value > dp[i][c] {
+                dp[i][c] = dp[i-1][(c as u32 - item.weight) as usize] + item.value;
+            }
+        }
+    }
+    pretty_print::utils::print_2d_table_with_indexes(&dp);
+    dp[items.len()][capacity as usize]
+}
