@@ -17,7 +17,6 @@ fn main() {
     graph.add_undirected_edge(UnweightedEdge::new(3, 5));
 
     let mut bfs: BFS<usize> = BFS::new();
-    bfs.bfs(&graph, 1, 5);
-    println!("{:?}", bfs.reconstruct_path(&1, &3));
+    println!("{:?}", bfs.bfs(&graph, &1, &5));
 }
 

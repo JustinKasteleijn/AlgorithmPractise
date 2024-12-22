@@ -4,60 +4,57 @@ use crate::graph_algorithms::graph_structures::graph::Graph;
 use std::collections::{HashMap, HashSet};
 use std::hash::Hash;
 
-pub struct BFS<V>
+pub struct BFS<'a, V>
 where
     V: Hash + Eq,
 {
-    explored: HashSet<V>,
-    frontier: CustomQueue<V>,
-    predecessors: HashMap<V, V>,
-    distances: HashMap<V, usize>,
+    explored: HashSet<&'a V>,
+    frontier: CustomQueue<&'a V>,
+    predecessors: HashMap<&'a V, (&'a V, usize)>,
 }
 
-impl<V> BFS<V>
+impl<'a, V> BFS<'a, V>
 where
     V: Hash + Eq + Clone,
 {
-    pub fn new() -> BFS<V> {
-        BFS::<V> {
+    pub fn new() -> BFS<'a, V> {
+        BFS::<'a, V> {
             explored: HashSet::new(),
             frontier: CustomQueue::new(),
             predecessors: HashMap::new(),
-            distances: HashMap::new(),
         }
     }
 
-    pub fn bfs(&mut self, graph: &Graph<V, UnweightedEdge<V>>, start: V, target: V) -> HashMap<V, V> {
-        self.predecessors.insert(start.clone(), start.clone());
-        self.explored.insert(start.clone());
-        self.frontier.enqueue(start.clone());
-        self.distances.insert(start.clone(), 0);
+    pub fn bfs(&mut self, graph: &'a Graph<V, UnweightedEdge<V>>, start: &'a V, target: &'a V) -> Option<Vec<V>> {
+        self.frontier.enqueue(start);
+        self.explored.insert(start);
+        self.predecessors.insert(start, (start, 0));
 
         while let Some(v) = self.frontier.dequeue() {
             if v == target {
-                return self.predecessors.clone();
+                return Some(self.reconstruct_path(&start, &target));
             }
 
-            for neighbor in graph.get_adjacent(&v).unwrap_or(&Vec::new()) {
-                let neighbor = neighbor.destination();
-                if self.explored.contains(neighbor) { continue; }
-                self.frontier.enqueue(neighbor.clone());
-                self.explored.insert(neighbor.clone());
-                self.distances.insert(neighbor.clone(), self.distances[&v] + 1);
-                self.predecessors.insert(neighbor.clone(), v.clone());
+            if let Some(neighbors) = graph.get_adjacent(v) {
+                for neighbor in neighbors {
+                    let neighbor = neighbor.destination();
+                    if self.explored.contains(neighbor) {continue;}
+                    self.explored.insert(neighbor);
+                    self.frontier.enqueue(neighbor);
+                    self.predecessors.insert(neighbor, (v, self.predecessors[v].1 + 1));
+                }
             }
         }
-
-        self.predecessors.clone()
+        None
     }
 
-    pub fn reconstruct_path(&self, start: &V, target: &V) -> Vec<V> {
+    fn reconstruct_path(&self, start: &'a V, target: &'a V) -> Vec<V> {
         let mut path: Vec<V> = Vec::new();
-        let mut current = target.clone();
+        let mut current = target;
 
-        while current != *start {
+        while current != start {
             path.push(current.clone());
-            current = self.predecessors[&current].clone();
+            (current, _) = self.predecessors[&current].clone();
         }
         path.push(start.clone());
 
