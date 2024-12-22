@@ -1,5 +1,3 @@
-use crate::pretty_print;
-
 pub fn recursive_ways_to_make_sum(coins: &Vec<u32>, n: usize, sum: i128) -> u32 {
     if sum == 0 {
         return 1

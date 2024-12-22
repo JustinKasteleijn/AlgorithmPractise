@@ -39,6 +39,8 @@ pub fn dp_knapsack(items: &Vec<Item>, capacity: u32) -> u32 {
             }
         }
     }
+
+
     pretty_print::utils::print_2d_table_with_indexes(&dp);
     dp[items.len()][capacity as usize]
 }
