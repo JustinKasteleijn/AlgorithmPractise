@@ -6,7 +6,6 @@ pub trait Edge {
     fn source(&self) -> &Self::Value;
     fn destination(&self) -> &Self::Value;
 
-    // Define a default constructor for edges (common trait method)
     fn new(src: Self::Value, dest: Self::Value) -> Self;
 }
 
@@ -71,7 +70,7 @@ where
         Self {
             src,
             dest,
-            weight: W::default()
+            weight: W::default(),
         }
     }
 }
